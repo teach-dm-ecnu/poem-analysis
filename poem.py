@@ -3,18 +3,18 @@
 author: Ziyu Chen
 """
 
-import gensim
 from aip import AipNlp
 import matplotlib.pyplot as plt
 import jieba
-import jieba.posseg as pseg
-import numpy as np
-import PIL as image
 from snownlp import SnowNLP
 import re
 from wordcloud import WordCloud, ImageColorGenerator
 from scipy.misc import imread
 import os
+from pylab import mpl
+import json
+mpl.rcParams['font.sans-serif'] = ['FangSong']
+mpl.rcParams['axes.unicode_minus'] = False
 
 """
 global variable
@@ -53,7 +53,8 @@ class Poem:
         for word in stopwords_data:
             self.stopwords.append(word.strip())
         self.stopwords.extend(['\n', ' ', Poem.poet, Poem.poem_kind, Poem.poem_title, Poem.poem])
-        print(self.stopwords)
+        #print(self.stopwords)
+        file_stopword.close()
 
     def process(self):
         self.poem_set = []
@@ -80,6 +81,7 @@ class Poem:
                 # print(p)
                 p.clear()
             line = file.readline()
+        file.close()
 
     def generate_word_cloud(self, textfile, backgroud_pic, save_file, userpic_as_backgroud=True):
         '''
@@ -96,7 +98,7 @@ class Poem:
         for word in word_list:
             if word not in self.stopwords:
                 word_frequency[word] = word_frequency.get(word, 0) + 1
-        print('word_frequency', word_frequency)
+        # print('word_frequency', word_frequency)
         # wordcloud = WordCloud(mask=pic, font_path=r'C:\Windows\Fonts\FZYTK.TTF'
         #                       , background_color='white', margin=2, width=1600, height=900, max_words=700,
         #                       min_font_size=3, max_font_size=40,
@@ -139,18 +141,70 @@ class Poem:
         self.generate_word_cloud('temp.txt', backgroud_pic, save_file, userpic_as_backgroud=False)
         os.remove('temp.txt')
 
+    def draw_pie(self, labels, quants, save_file, title, top=10):
+        plt.figure(1, figsize=(6, 6))
+        expl = [0.1]
+        expl.extend([0]*(top-1))
+        colors = ["blue", "red", "coral", "green", "yellow", "orange"]  # 设置颜色（循环显示）
+        # 设置百分号的格式
+        plt.pie(quants, explode=expl, colors=colors, labels=labels, autopct='%1.1f%%', pctdistance=0.8, shadow=True)
+        plt.title(title, bbox={'facecolor': '0.8', 'pad': 5})
+        # plt.show()
+        plt.savefig(save_file)
+        plt.close()
+
+    def top_10_poet_poem(self):
+        poet_poem = dict()
+        for p in self.poem_set:
+            poet_poem[p[Poem.poet]] = poet_poem.get(p[Poem.poet], 0) + 1
+        sorted_poet_poem = sorted(poet_poem.items(), key=lambda d: d[1], reverse=True)
+        labels = [v[0] for v in sorted_poet_poem[:10]]
+        quants = [v[1] for v in sorted_poet_poem[:10]]
+        # print(labels, quants)
+        return labels, quants
+
+    def draw_top_produced_poet(self):
+        labels, quants = self.top_10_poet_poem()
+        self.draw_pie(labels, quants, 'top_10_produced_poets.jpg', '创作量前十的诗人')
+
+    def top_poem_kind(self, top=5):
+        poem_kind = dict()
+        for p in self.poem_set:
+            poem_kind[p[Poem.poem_kind]] = poem_kind.get(p[Poem.poem_kind], 0) + 1
+        sorted_poem_kind = sorted(poem_kind.items(), key=lambda d: d[1], reverse=True)
+        labels = [v[0] for v in sorted_poem_kind[:top]]
+        quants = [v[1] for v in sorted_poem_kind[:top]]
+        return labels, quants
+
+    def draw_top_poem_kind(self):
+        labels, quants = self.top_poem_kind(top=5)
+        self.draw_pie(labels, quants, 'top_5_poem_kind.jpg', '各种诗体占的比重', top=5)
+
+    def pos_statitics(self):
+        # 词性的分析与统计
+        client = AipNlp(APP_ID, API_KEY, SECRET_KEY)
+        file = open(self.filename)
+        text = file.read()
+        filter = re.compile('诗名:|作者:|诗体:|诗文:')
+
 
 
 
 if __name__ == '__main__':
     pass
-    poem = Poem('poetry1.txt')
-    poem.set_stopwords('stopwords.txt')
-    poem.process()
-    poem_set = poem.return_poem_set()
-    for one_poem in poem_set:
-        print(one_poem)
-    poem.generate_word_cloud('poetry1.txt', 'jiubei.jpg', 'jiubei_cw.jpg', userpic_as_backgroud=False)
-    print(poem.poet_statistics())
-    print(poem.poet_kind_statistics())
-    poem.generate_wordcloud_for_poet('李白', 'libai_dufu.jpg', 'libai_cw.jpg')
+    # poem = Poem('poetry_simplified.txt')
+    # poem.set_stopwords('stopwords.txt')
+    # poem.process()
+    # poem_set = poem.return_poem_set()
+    # for one_poem in poem_set:
+    #     print(one_poem)
+    # poem.generate_word_cloud('poetry_simplified.txt', 'jiubei.jpg', 'jiubei_cw.jpg', userpic_as_backgroud=False)
+    # print(poem.poet_statistics())
+    # print(poem.poet_kind_statistics())
+    # poem.generate_wordcloud_for_poet('李白', 'libai_dufu.jpg', 'libai_cw.jpg')
+    # poem.draw_top_produced_poet()
+    # poem.draw_top_poem_kind()
+    # client = AipNlp(APP_ID, API_KEY, SECRET_KEY)
+    # text = '我们都喜欢吃苹果'
+    # result = client.lexer(text)
+    # print(result)
