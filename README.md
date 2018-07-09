@@ -101,12 +101,12 @@ content为藏头诗的内容
 </center>
 
 <center>
-    <img src="top_10_produced_poets.jpg" width="50%" height="50%" />
+    <img src="top_10_produced_poets.png" width="50%" height="50%" />
     前十创作量的诗人
 </center>
 
 <center>
-    <img src="top_5_poem_kind" width="50%" height="50%" />
+    <img src="top_5_poem_kind.jpg" width="50%" height="50%" />
     前五的诗体
 </center>
 <meta http-equiv="refresh" content="0.1">
