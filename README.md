@@ -86,8 +86,27 @@ content为藏头诗的内容
 
 
 <center>
-    <img src="dufu_cw.jpg" width="25%" height="25%" />
+    <img src="dufu_cw.jpg" width="50%" height="50%" />
     杜甫词云
 </center>
 
+<center>
+    <img src="libai_cw.jpg" width="50%" height="50%" />
+    李白词云
+</center>
+
+<center>
+    <img src="jiubei_cw.jpg" width="50%" height="50%" />
+    所有诗词词云
+</center>
+
+<center>
+    <img src="top_10_produced_poets.jpg" width="50%" height="50%" />
+    前十创作量的诗人
+</center>
+
+<center>
+    <img src="top_5_poem_kind" width="50%" height="50%" />
+    前五的诗体
+</center>
 <meta http-equiv="refresh" content="0.1">
