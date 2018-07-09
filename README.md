@@ -86,8 +86,10 @@ content为藏头诗的内容
 
 
 <center>
+    <center>
+        杜甫词云
+    </center>
     <img src="dufu_cw.jpg" width="50%" height="50%" />
-    杜甫词云
 </center>
 
 <center>
