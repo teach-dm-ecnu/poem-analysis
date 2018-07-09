@@ -3,6 +3,14 @@
 - pycharm
 - tensorflow-gpu1.8
 - python3.6
+- matplotlib.pyplot 
+- jieba
+- snownlp
+- re
+- wordcloud
+- scipy.misc 
+- os
+- pylab
 
 
 
@@ -30,8 +38,12 @@ content为藏头诗的内容
 
 姚二虚浓剑，千里复相辇。
 
+![杜甫词云](dufu_cw.jpg)
+
 老缘犹今去，酌但堂翠根。
 
 师没西惑子，客看成便何。
 
 帅衣初满地，珠笛漱丹天。
+
+
