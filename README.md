@@ -86,28 +86,47 @@ content为藏头诗的内容
 
 
 <center>
-    杜甫词云
     <img src="dufu_cw.jpg" width="50%" height="50%" />
+    杜甫词云
 </center>
 
 <center>
-    李白词云
     <img src="libai_cw.jpg" width="50%" height="50%" />
+    李白词云
 </center>
 
 <center>
-    所有诗词词云
     <img src="jiubei_cw.jpg" width="50%" height="50%" />
+    所有诗词词云
 </center>
 
 <center>
-    前十创作量诗人
     <img src="top_10_produced_poets.png" width="50%" height="50%" />
+    前十创作量的诗人
 </center>
 
 <center>
-    前五的诗体
     <img src="top_5_poem_kind.jpg" width="50%" height="50%" />
+    前五的诗体
 </center>
 
-<meta http-equiv="refresh" content="0.1">
+#### 主要代码
+
+```python
+
+from poem import Poem
+
+if __name__ == '__main__':
+    poem = Poem('poetry_simplified.txt')
+    poem.set_stopwords('stopwords.txt')
+    poem.process()
+    poem_set = poem.return_poem_set()
+    poem.generate_word_cloud('poetry_simplified.txt', 'jiubei.jpg', 'jiubei_cw.jpg', userpic_as_backgroud=False)
+    poem.generate_wordcloud_for_poet('李白', 'libai.jpg', 'libai_cw.jpg')
+    poem.generate_wordcloud_for_poet('杜甫', 'dufu.jpg', 'dufu_cw.jpg')
+    poem.draw_top_produced_poet()
+    poem.draw_top_poem_kind()
+    # poem.word_statistics(15)
+```
+
+>     <meta http-equiv="refresh" content="0.1">
